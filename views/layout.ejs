@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Лабораторная №2</title>
+    </head>
+    <body> 
+      <div>
+        <div>
+          <ul>
+            <% for (let file of list) {%>
+             <li>
+              <% if (file.type == "file") {%> <%= file.name %> <% } else {%>
+              <a href="/local/<%= dir.slice(8) + file.name %>"><%= file.name %></a> <% }%>
+              <div>
+                <button type="button" onclick="del(`<%= dir + file.name %>`)">Удалить</button>
+                <% if ((file.type == "file")) { %>
+                <button type="button" onclick="location.href='/download/<%= dir + '/' + file.name %>'">Скачать</button>
+                <% } %>
+              </div>
+            </li>
+            <% } %>
+          </ul>
+        </div>
+        <script>
+          function del(path) {
+              const data = {
+                  path: path,
+              };
+              const url = "/delete";
+              fetch(url, {  
+                  method: "POST",
+                  body: new URLSearchParams(data),
+                  headers: {
+                      "Content-Type": "application/x-www-form-urlencoded",
+                  },
+              });
+              location.reload();
+          }
+        </script>
+      </div>
+    </body>
+    <style>
+       li {
+        list-style-type: none;
+       }
+  </style>
+</html>
